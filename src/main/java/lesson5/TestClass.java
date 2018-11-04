@@ -2,15 +2,25 @@ package lesson5;
 
 public abstract class TestClass {
 
-    public static double squareRoot(double num) {
-        return Math.sqrt(num);
+    public static java.lang.Integer factorial1(int num) {
+        if(num < 0)
+            return null;
+        else{
+        int result = 1;
+        for(int i=1;i<=num;i++)
+            result=result*i;
+        return result;
+    }
+}
+
+    public static java.lang.Integer factorial2(int num) {
+        if(num < 0)
+            return null;
+        else{
+            if (num == 0) return 1;
+            return num*factorial2(num-1);
+        }
     }
 
-    public static double square(double num) {
-        return Math.pow(num,2);
-    }
 
-    public static double cosine(double num) {
-        return Math.cos(num);
-    }
 }
