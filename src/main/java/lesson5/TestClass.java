@@ -2,7 +2,7 @@ package lesson5;
 
 public abstract class TestClass {
 
-    public static java.lang.Integer factorial1(int num) {
+    public static Integer factorial1(int num) {
         if(num < 0)
             return null;
         else{
@@ -13,7 +13,7 @@ public abstract class TestClass {
     }
 }
 
-    public static java.lang.Integer factorial2(int num) {
+    public static Integer factorial2(int num) {
         if(num < 0)
             return null;
         else{
