@@ -81,12 +81,13 @@ public class TestForFunctions{
     @Tag("positive")
     public void triangleTest(double a, double h, double expectedResult){
         double result = triangleArea(a, h);
+        //System.out.println("test triangle " + a +" "+ h);
         assertThat("Incorrect!", result, equalTo(expectedResult));
     }
 
     private static Stream<Arguments> triangleValuesProvider() {
         return Stream.of(
-                Arguments.of(1.0, 1.0, 0.58),
+                Arguments.of(1.0, 1.0, 0.5),
                 Arguments.of(0.5, 0.3, 0.075),
                 Arguments.of(2.0, 5.5, 5.5)
         );
