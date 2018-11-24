@@ -1,0 +1,44 @@
+{
+  "required": [
+    "id",
+    "instrument_id",
+    "price_alert",
+    "status",
+    "sec_name",
+    "ticker",
+    "sec_type",
+    "created_at"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "instrument_id": {
+      "type": "string"
+    },
+    "price_alert": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string"
+    },
+    "sec_name": {
+      "type": "string"
+    },
+    "ticker": {
+      "type": "string"
+    },
+    "sec_type": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    },
+    "completed_at": {
+      "type": "string"
+    },
+    "canceled_at": {
+      "type": "string"
+    }
+  }
+}
