@@ -11,7 +11,7 @@ public class DeleteSubscriptionTest{
 
     @Test
     public void DeleteSubscriptionsSuccessTest(){
-        String subscriptionId = new SubscriptionHelper().createSubscription("TCS_SPBXM", "TCS", "equity", 10.0);
+        String subscriptionId = SubscriptionHelper.createSubscription("TCS_SPBXM", "TCS", "equity", 10.0);
         given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
                 .pathParam("subscription_id",subscriptionId)
@@ -36,8 +36,8 @@ public class DeleteSubscriptionTest{
 
     @Test
     public void DeleteSubscriptionsAlreadyDeletedTest(){
-        String subscriptionId = new SubscriptionHelper().createSubscription("TCS_SPBXM", "TCS", "equity", 10.0);
-        new SubscriptionHelper().deleteSubscription(subscriptionId);
+        String subscriptionId = SubscriptionHelper.createSubscription("TCS_SPBXM", "TCS", "equity", 10.0);
+        SubscriptionHelper.deleteSubscription(subscriptionId);
         given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
                 .pathParam("subscription_id",subscriptionId)
@@ -79,7 +79,7 @@ public class DeleteSubscriptionTest{
 
     @BeforeAll
     static void prepare(){
-        new SubscriptionHelper().deleteAllSubscriptions();
+        SubscriptionHelper.deleteAllSubscriptions();
     }
 
 

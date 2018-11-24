@@ -18,8 +18,9 @@ public abstract class RequestModel {
                 .setBaseUri(BASE_URI)
                 .setBasePath(BASE_PATH)
                 .setAuth(authScheme)
-//                .addFilter(new RequestLoggingFilter())
-//               .addFilter(new ResponseLoggingFilter())
+                .addFilter(new RequestLoggingFilter())
+                .addFilter(new ResponseLoggingFilter())
+                .addFilter(new ErrorLoggingFilter())
                 .build();
     }
 

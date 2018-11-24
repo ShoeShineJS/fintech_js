@@ -8,7 +8,7 @@ import static io.restassured.RestAssured.given;
 
 public class SubscriptionHelper {
 
-    public void deleteAllSubscriptions(){
+    static void deleteAllSubscriptions(){
         SubscriptionInfo subscriptionInfo[] = given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
                 .queryParam("request_id", "6f994192-e701-11e8-9f32-f2801f1b9fd1")
@@ -21,11 +21,11 @@ public class SubscriptionHelper {
                 .as(SubscriptionInfo[].class);
 
         for(SubscriptionInfo subscr : subscriptionInfo) {
-            deleteSubscription(subscr.getSubscriptionId());
+            deleteSubscription(subscr.getId());
         }
     }
 
-    public void deleteSubscription(String subscriptionId){
+    static void deleteSubscription(String subscriptionId){
         given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
                 .pathParam("subscription_id",subscriptionId)
@@ -37,7 +37,7 @@ public class SubscriptionHelper {
                 .statusCode(200);
     }
 
-    public String createSubscription(String instrumentId, String secName, String secType, Double priceAlert){
+    static String createSubscription(String instrumentId, String secName, String secType, Double priceAlert){
         String id = given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
                 .queryParam("request_id", "6f994192-e701-11e8-9f32-f2801f1b9fd1")

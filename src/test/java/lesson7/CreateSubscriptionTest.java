@@ -22,7 +22,8 @@ public class CreateSubscriptionTest {
     @ParameterizedTest(name = "create subscription with price alert ''{3}''")
     @MethodSource("instrumentProvider")
     public void createSubscriptionSuccessTest(String instrumentId, String secName, String secType, Double priceAlert){
-        SubscriptionInfo subscriptionInfo = given().spec(RequestModel.getRequestSpecification())
+        SubscriptionInfo subscriptionInfo = given()
+                .spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
                 .queryParam("request_id", "6f994192-e701-11e8-9f32-f2801f1b9fd1")
                 .queryParam("system_code", "T-API")
@@ -53,7 +54,7 @@ public class CreateSubscriptionTest {
 
     @Test
     public void createSubscriptionSameInstrumentErrorTest(){
-        new SubscriptionHelper().createSubscription("GAZP_TQBR", "GAZP", "equity", 500.0);
+        SubscriptionHelper.createSubscription("GAZP_TQBR", "GAZP", "equity", 500.0);
         given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
                 .queryParam("request_id", "6f994192-e701-11e8-9f32-f2801f1b9fd1")
@@ -65,16 +66,6 @@ public class CreateSubscriptionTest {
                 .statusCode(409)
                 .body("error", Matchers.equalTo("could not create subscription: subscription constraint violated"));
 
-        given().spec(RequestModel.getRequestSpecification())
-                .pathParam("siebel_id", "yu.shilkova")
-                .queryParam("request_id", "6f994192-e701-11e8-9f32-f2801f1b9fd1")
-                .queryParam("system_code", "T-API")
-                .get("/contacts/{siebel_id}/subscriptions")
-                .then()
-                .specification(RequestModel.getResponseSpecification())
-                .assertThat()
-                .statusCode(200)
-                .body("", Matchers.hasSize(1));
     }
 
     @Test
@@ -93,12 +84,12 @@ public class CreateSubscriptionTest {
 
 @AfterEach
     public void SubscriptionCleanUp(){
-        new SubscriptionHelper().deleteAllSubscriptions();
+        SubscriptionHelper.deleteAllSubscriptions();
 }
 
 @BeforeAll
     static void prepare(){
-      new SubscriptionHelper().deleteAllSubscriptions();
+      SubscriptionHelper.deleteAllSubscriptions();
 }
 
 }

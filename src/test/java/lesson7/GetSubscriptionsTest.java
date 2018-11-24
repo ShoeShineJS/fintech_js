@@ -26,8 +26,8 @@ public class GetSubscriptionsTest{
 
     @Test
     public void getSubscriptionsNonEmptyTest(){
-        String sub1 = new SubscriptionHelper().createSubscription("TCS_SPBXM", "TCS", "equity", 10.0);
-        String sub2 = new SubscriptionHelper().createSubscription("AAPL_SPBXM", "AAPL", "equity", 300.0);
+        String sub1 = SubscriptionHelper.createSubscription("TCS_SPBXM", "TCS", "equity", 10.0);
+        String sub2 = SubscriptionHelper.createSubscription("AAPL_SPBXM", "AAPL", "equity", 300.0);
         given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
                 .queryParam("request_id", "6f994192-e701-11e8-9f32-f2801f1b9fd1")
@@ -42,12 +42,12 @@ public class GetSubscriptionsTest{
 
     @AfterEach
     public void SubscriptionCleanUp(){
-        new SubscriptionHelper().deleteAllSubscriptions();
+        SubscriptionHelper.deleteAllSubscriptions();
     }
 
     @BeforeAll
     static void prepare(){
-        new SubscriptionHelper().deleteAllSubscriptions();
+        SubscriptionHelper.deleteAllSubscriptions();
     }
 
 }
