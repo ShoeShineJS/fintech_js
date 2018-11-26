@@ -1,11 +1,9 @@
 package lesson7;
 
+import io.qameta.allure.*;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import lesson7.entity.CreateSubscriptionInfo;
 import lesson7.entity.SubscriptionInfo;
 import lesson7.request.RequestModel;
@@ -15,12 +13,19 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static lesson7.SubscriptionHelper.createSubscription;
 import static io.restassured.RestAssured.given;
 
+@Epic("Market Data")
+@Feature("Подписка на инструмент")
+@Story("Создание подписки")
+@DisplayName("Тесты создания подписки")
 public class CreateSubscriptionTest {
 
-    @ParameterizedTest(name = "create subscription with price alert ''{3}''")
+    @Link("https://fintech-trading-qa.tinkoff.ru/v1/md/docs/#/Subscriptions/md-contacts-subscription-create")
+    @ParameterizedTest(name = "Создание подписки с price alert ''{3}''")
     @MethodSource("instrumentProvider")
+    @Description("Позитивный сценарий создания подписки")
     public void createSubscriptionSuccessTest(String instrumentId, String secName, String secType, Double priceAlert){
         SubscriptionInfo subscriptionInfo = given()
                 .spec(RequestModel.getRequestSpecification())
@@ -43,6 +48,8 @@ public class CreateSubscriptionTest {
                 () -> Assertions.assertEquals(secType , subscriptionInfo.getSecType()),
                 () -> Assertions.assertEquals(priceAlert , subscriptionInfo.getPriceAlert())
         );
+
+        createAttachment(subscriptionInfo.toString());
     }
 
     private static Stream<Arguments> instrumentProvider() {
@@ -53,8 +60,10 @@ public class CreateSubscriptionTest {
     }
 
     @Test
+    @DisplayName("Создание второй подписки для инструмента")
+    @Description("Проверка конфликта создания подписки: вторая подписка для того же инструмента")
     public void createSubscriptionSameInstrumentErrorTest(){
-        SubscriptionHelper.createSubscription("GAZP_TQBR", "GAZP", "equity", 500.0);
+        createSubscription("GAZP_TQBR", "GAZP", "equity", 500.0);
         given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
                 .queryParam("request_id", "6f994192-e701-11e8-9f32-f2801f1b9fd1")
@@ -69,6 +78,8 @@ public class CreateSubscriptionTest {
     }
 
     @Test
+    @DisplayName("Создание подписки для несуществующего инструмента")
+    @Description("Проверка получения ошибки при создании подписки для несуществующего инструмента")
     public void createSubscriptionInstrumentNotFoundErrorTest(){
         given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
@@ -80,6 +91,11 @@ public class CreateSubscriptionTest {
                 .specification(RequestModel.getResponseSpecification())
                 .statusCode(400)
                 .body("error", Matchers.equalTo("instrument not found"));
+    }
+
+    @Attachment("Request")
+    private byte[] createAttachment(String attachment) {
+        return attachment.getBytes();
     }
 
 @AfterEach

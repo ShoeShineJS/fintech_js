@@ -1,17 +1,30 @@
 package lesson7;
 
+import io.qameta.allure.*;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import lesson7.request.RequestModel;
 
+import static lesson7.SubscriptionHelper.createSubscription;
+import static lesson7.SubscriptionHelper.deleteSubscription;
+
 import static io.restassured.RestAssured.given;
 
+@Epic("Market Data")
+@Feature("Подписка на инструмент")
+@Story("Удаление подписки")
+@DisplayName("Тесты удаления подписки")
 public class DeleteSubscriptionTest{
 
+    @Link("https://fintech-trading-qa.tinkoff.ru/v1/md/docs/#/Subscriptions/md-contacts-subscription-concel")
     @Test
+    @DisplayName("Успешное удаление подписки")
+    @Description("Позитивный сценарий удаления подписки")
     public void DeleteSubscriptionsSuccessTest(){
-        String subscriptionId = SubscriptionHelper.createSubscription("TCS_SPBXM", "TCS", "equity", 10.0);
+        String subscriptionId = createSubscription("TCS_SPBXM", "TCS", "equity", 10.0);
         given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
                 .pathParam("subscription_id",subscriptionId)
@@ -35,9 +48,11 @@ public class DeleteSubscriptionTest{
     }
 
     @Test
+    @DisplayName("Удаление удаленной подписки")
+    @Description("Проверка успешного удаления подписки, которая была уже удалена ранее")
     public void DeleteSubscriptionsAlreadyDeletedTest(){
-        String subscriptionId = SubscriptionHelper.createSubscription("TCS_SPBXM", "TCS", "equity", 10.0);
-        SubscriptionHelper.deleteSubscription(subscriptionId);
+        String subscriptionId = createSubscription("TCS_SPBXM", "TCS", "equity", 10.0);
+        deleteSubscription(subscriptionId);
         given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
                 .pathParam("subscription_id",subscriptionId)
@@ -50,6 +65,10 @@ public class DeleteSubscriptionTest{
     }
 
     @Test
+    @Issue("SB-123")
+    @TmsLink("1234")
+    @DisplayName("Удаление несуществующей подписки")
+    @Description("Проверка получения ошибки при удалении несуществующей подписки")
     public void DeleteSubscriptionsNonExistedTest(){
         given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
@@ -64,6 +83,8 @@ public class DeleteSubscriptionTest{
     }
 
     @Test
+    @DisplayName("Удаление подписки с указанием некорректного id")
+    @Description("Проверка получения ошибки при удалении подписки по некорректному id")
     public void DeleteSubscriptionsInvalidIdTest(){
         given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
@@ -81,6 +102,4 @@ public class DeleteSubscriptionTest{
     static void prepare(){
         SubscriptionHelper.deleteAllSubscriptions();
     }
-
-
 }

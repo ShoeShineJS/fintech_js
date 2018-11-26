@@ -1,12 +1,13 @@
 package lesson7;
 
+import io.qameta.allure.Step;
 import lesson7.entity.CreateSubscriptionInfo;
 import lesson7.entity.SubscriptionInfo;
 import lesson7.request.RequestModel;
 
 import static io.restassured.RestAssured.given;
 
-public class SubscriptionHelper {
+public abstract class SubscriptionHelper {
 
     static void deleteAllSubscriptions(){
         SubscriptionInfo subscriptionInfo[] = given().spec(RequestModel.getRequestSpecification())
@@ -25,6 +26,7 @@ public class SubscriptionHelper {
         }
     }
 
+    @Step("Удаляем подписку c id {0}")
     static void deleteSubscription(String subscriptionId){
         given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")
@@ -37,6 +39,7 @@ public class SubscriptionHelper {
                 .statusCode(200);
     }
 
+    @Step("Создаем подписку для инструмента с id {0}")
     static String createSubscription(String instrumentId, String secName, String secType, Double priceAlert){
         String id = given().spec(RequestModel.getRequestSpecification())
                 .pathParam("siebel_id", "yu.shilkova")

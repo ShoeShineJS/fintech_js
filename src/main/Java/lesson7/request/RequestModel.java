@@ -6,6 +6,7 @@ import io.restassured.filter.log.*;
 import io.restassured.http.ContentType;
 import io.restassured.specification.*;
 
+
 import static lesson7.EndPoints.*;
 
 public abstract class RequestModel {
